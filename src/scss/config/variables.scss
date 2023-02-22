@@ -1,5 +1,6 @@
 :root {
-  --slide: 0;
+  --slide: -100%;
+  --transition: transform 400ms ease-in-out;
 }
 
 /* Variables SASS */

@@ -13,38 +13,26 @@ const rootStyles = document.documentElement.style;
 const previousButton = document.getElementById('previous');
 const nextButton = document.getElementById('next');
 const sliderElement = document.getElementById('slider');
-const contadorElement = document.getElementById('contador');
 
-let counter = 0;
+let direction;
 
-const setRootStyles = () => {
-  rootStyles.setProperty('--slide', `${-100 * counter}%`);
-};
-
+// NEXT PICTURE
 nextButton.addEventListener('click', () => {
-  if (counter >= sliderElement.children.length - 1) {
-    sliderElement.append(sliderElement.children[0]);
-    rootStyles.setProperty('--slide', `${-100 * counter}%`);
-    counter--;
-    contadorElement.textContent = counter;
-    return;
-  }
-  counter++;
-  rootStyles.setProperty('--slide', `${-100 * counter}%`);
-  contadorElement.textContent = counter;
+  rootStyles.setProperty('--slide', '-300%');
+  direction = 1;
 });
 
+// PREVIOUS PICTURE
 previousButton.addEventListener('click', () => {
-  counter--;
-  if (counter <= 0) {
-    sliderElement.prepend(sliderElement.children[sliderElement.children.length - 1]);
-    counter++;
-    rootStyles.setProperty('--slide', `${-100 * counter}%`);
-    contadorElement.textContent = counter;
-    return;
-  }
-  rootStyles.setProperty('--slide', `${-100 * counter}%`);
-  contadorElement.textContent = counter;
+  rootStyles.setProperty('--slide', '-100%');
+  direction = -1;
 });
 
-contadorElement.textContent = counter;
+sliderElement.addEventListener('transitionend', () => {
+  direction === 1 ? sliderElement.append(sliderElement.firstElementChild) : sliderElement.prepend(sliderElement.lastElementChild);
+  rootStyles.setProperty('--transition', 'none');
+  rootStyles.setProperty('--slide', '-200%');
+  setTimeout(() => {
+    rootStyles.setProperty('--transition', 'transform 400ms ease-in-out');
+  });
+});
